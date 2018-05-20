@@ -33,6 +33,14 @@ const vehicles = [
     long: 29.234703,
     speed: 0,
   },
+  {
+    vehicleId: "ford5",
+    plate: "34 TEST 05",
+    vin: "ford5_vin",
+    lat: 40.975243,
+    long: 29.134703,
+    speed: 0,
+  },
 ];
 
 const proxy = {

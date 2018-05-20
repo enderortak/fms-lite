@@ -5,7 +5,7 @@ const testUsers = [
     username: "ender",
     password: "1234",
     name: "Ender Ortak",
-    vehicles: ["ford1", "ford2", "ford3"],
+    vehicles: ["ford1", "ford2", "ford3", "ford5"],
   },
   {
     username: "ender1",

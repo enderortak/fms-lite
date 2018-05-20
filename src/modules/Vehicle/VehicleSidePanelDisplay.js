@@ -1,9 +1,9 @@
 
 import React from "react";
 import { RadialGauge } from "react-canvas-gauges";
-import { Header, Icon, Segment, Item, Label } from "semantic-ui-react";
-import "./../../shared/style/fonts/grandnationalsuperital.css";
+import { Item, Label, Segment } from "semantic-ui-react";
 import GeocodingService from "../../service/GeocodingService";
+import "./../../shared/style/fonts/grandnationalsuperital.css";
 
 const geocoder = new GeocodingService();
 
@@ -55,8 +55,8 @@ export default class VehicleSidePanelDisplay extends React.Component {
         <Segment>
           <Item.Group>
             <Item>
-              <i className="ui icon ui-icon-truck-front" style={{ fontSize: "5rem" }} />
-              <Item.Content>
+              <i className="ui huge icon ui-icon-truck-front" />
+              <Item.Content style={{ width: "calc(100% - 4em)" }}>
                 <Item.Header>{vehicle.plate}</Item.Header>
                 <Item.Meta style={{ minHeight: "2em" }}>
                   <span>{this.state.address}</span>
@@ -104,7 +104,7 @@ export default class VehicleSidePanelDisplay extends React.Component {
             needleCircleSize={7}
             needleCircleOuter
             needleCircleInner={false}
-            animationDuration={1500}
+            animationDuration={500}
             animationRule="linear"
             ticksAngle={200}
             startAngle={80}
