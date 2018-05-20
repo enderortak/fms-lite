@@ -1,0 +1,46 @@
+@import "../../../shared/style/base";
+
+$side-panel-toggler-height: 6rem;
+$side-panel-toggler-width: 3rem;
+
+#side-panel{
+  position:  fixed;
+  width: $side-panel-width;
+  height: calc(100% - #{$top-panel-height});
+  min-height: $side-panel-toggler-height;
+  right: -$side-panel-width;
+  top: $top-panel-height;
+  
+  z-index: $side-panel-z-index;
+  background: $bg-color-light;
+  -webkit-transition: right 0.75s; /* Safari */
+  transition: right 0.75s;
+
+
+  &.open{
+    right: 0;
+  }
+
+  .toggle-panel{
+
+    position: absolute;
+    width: $side-panel-toggler-width;
+    height: $side-panel-toggler-height;
+    left: -$side-panel-toggler-width;
+    top: calc(50% - #{$side-panel-toggler-height/2});
+
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+
+    background: #9a9a9a;
+    opacity: 0.35;
+    cursor: pointer;
+
+    i {
+      font-size: $side-panel-toggler-height/3;
+      line-height: $side-panel-toggler-height;
+      margin-left: .5rem;
+      color: #FFFFFF;
+    }
+  }
+}

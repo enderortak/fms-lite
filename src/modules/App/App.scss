@@ -1,0 +1,11 @@
+@import "../../shared/style/base";
+@import "../../shared/style/flexbox.mixin";
+
+#wrapper{
+    position: absolute;
+    top: $top-panel-height;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include flexboxContainer(row, nowrap, flex-start, stretch);
+}
