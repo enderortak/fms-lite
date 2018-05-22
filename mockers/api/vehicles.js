@@ -8,6 +8,7 @@ const vehicles = [
     lat: 40.973980,
     long: 29.232574,
     speed: 58,
+    lastPositionUpdate: "20180522161115",
   },
   {
     vehicleId: "ford2",
@@ -16,6 +17,7 @@ const vehicles = [
     lat: 40.975243,
     long: 29.233703,
     speed: 0,
+    lastPositionUpdate: "20180522160115",
   },
   {
     vehicleId: "ford3",
@@ -24,6 +26,7 @@ const vehicles = [
     lat: 40.975243,
     long: 29.234203,
     speed: 0,
+    lastPositionUpdate: "20180522155415",
   },
   {
     vehicleId: "ford4",
@@ -32,6 +35,7 @@ const vehicles = [
     lat: 40.975243,
     long: 29.234703,
     speed: 0,
+    lastPositionUpdate: "20180522154315",
   },
   {
     vehicleId: "ford5",
@@ -39,7 +43,8 @@ const vehicles = [
     vin: "ford5_vin",
     lat: 40.975243,
     long: 29.134703,
-    speed: 0,
+    speed: 68,
+    lastPositionUpdate: "20180522155848",
   },
 ];
 

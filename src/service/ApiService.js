@@ -17,9 +17,10 @@ export default class ApiService {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: this.auth.loggedIn() ? `Bearer ${this.auth.getToken()}` : undefined,
+      "Access-Control-Allow-Origin": "*",
     };
     const requestOptions = {
-      headers: requestHeaders,
+      // headers: requestHeaders,
       method: httpMethod,
       body: httpMethod === "GET" ? undefined : JSON.stringify(requestBody),
     };

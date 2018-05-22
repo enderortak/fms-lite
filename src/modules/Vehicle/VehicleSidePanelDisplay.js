@@ -1,5 +1,6 @@
 
 import React from "react";
+import moment from "moment";
 import { RadialGauge } from "react-canvas-gauges";
 import { Item, Label, Segment } from "semantic-ui-react";
 import GeocodingService from "../../service/GeocodingService";
@@ -61,10 +62,10 @@ export default class VehicleSidePanelDisplay extends React.Component {
                 <Item.Meta style={{ minHeight: "2em" }}>
                   <span>{this.state.address}</span>
                 </Item.Meta>
-                <Item.Description>asd</Item.Description>
+                { /* <Item.Description></Item.Description> */ }
                 <Item.Extra>
-                  <Label>IMAX</Label>
-                  <Label icon="globe" content="Additional Languages" />
+                  <Label icon="clock" content={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")} />
+                  <Label icon="marker" content={`${vehicle.lat},${vehicle.long}`} />
                 </Item.Extra>
               </Item.Content>
             </Item>
@@ -84,7 +85,7 @@ export default class VehicleSidePanelDisplay extends React.Component {
             units="Km/h"
             title={false}
             animateOnInit
-            value={50}
+            value={vehicle.speed}
             minValue={0}
             maxValue={130}
             exactTicks
