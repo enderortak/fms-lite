@@ -37,7 +37,7 @@ const darkTheme = {
 export default class VehicleSidePanelDisplay extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { address: "" };
+    this.state = { street: "", district: "" };
     // this.renderVehicleDisplay = this.renderVehicleDisplay.bind(this);
   }
   componentWillUpdate(nextProps) {
@@ -45,9 +45,9 @@ export default class VehicleSidePanelDisplay extends React.Component {
       nextProps.vehicle &&
         (!this.props.vehicle || this.props.vehicle.vehicleId !== nextProps.vehicle.vehicleId)
     ) {
-      this.setState({ address: "" });
+      this.setState({ street: "", district: "" });
       geocoder.reverse(nextProps.vehicle.lat, nextProps.vehicle.long)
-        .then(result => this.setState({ address: result.display_name }));
+        .then(result => this.setState({ street: result.street, district: result.district }));
     }
   }
   renderVehicleDisplay(vehicle) {
@@ -59,10 +59,10 @@ export default class VehicleSidePanelDisplay extends React.Component {
               <i className="ui huge icon ui-icon-truck-front" />
               <Item.Content style={{ width: "calc(100% - 4em)" }}>
                 <Item.Header>{vehicle.plate}</Item.Header>
-                <Item.Meta style={{ minHeight: "2em" }}>
-                  <span>{this.state.address}</span>
+                <Item.Meta style={{ minHeight: "3em" }}>
+                  <div>{this.state.street}</div>
+                  <div>{this.state.district}</div>
                 </Item.Meta>
-                { /* <Item.Description></Item.Description> */ }
                 <Item.Extra>
                   <Label icon="clock" content={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")} />
                   <Label icon="marker" content={`${vehicle.lat},${vehicle.long}`} />

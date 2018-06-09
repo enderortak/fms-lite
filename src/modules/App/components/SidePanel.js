@@ -24,14 +24,15 @@ export default class SidePanel extends React.Component {
     return [
       [
         <Menu.Item key="Tab 1"><i className="ui icon ui-icon-truck-front" /> Araç</Menu.Item>,
-        <Tab.Pane>{ /* <VehicleInfo vehicle={this.props.selectedVehicle} /> */ }asdasd</Tab.Pane>,
+        <Tab.Pane><VehicleSidePanelDisplay
+          vehicle={state.map.vehicles.filter(v => v.vehicleId === state.map.selectedVehicle)[0]}
+        />
+        </Tab.Pane>,
       ],
       [
         <Menu.Item key="Tab 2"><Icon name="object group" />Gruplar</Menu.Item>,
         <Tab.Pane>
-          <VehicleSidePanelDisplay
-            vehicle={state.map.vehicles.filter(v => v.vehicleId === state.map.selectedVehicle)[0]}
-          />
+        asdasd
         </Tab.Pane>,
       ],
       [

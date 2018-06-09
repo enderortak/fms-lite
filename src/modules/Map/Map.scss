@@ -1,4 +1,5 @@
 @import "../../shared/style/base";
+@import "../../shared/style/pulse";
 @import "../../shared/style/flexbox.mixin";
 #map-display{
     position: fixed;
@@ -21,6 +22,7 @@
     & > *{
         height: 100%;
     }
+
 
     .leaflet-marker-icon.selected {
         -webkit-filter: drop-shadow(1px 1px 0 rgba(110, 204, 57, 0.6))
@@ -54,3 +56,4 @@
 .leaflet-ant-path{
     animation-duration: 30s !important;
 }
+

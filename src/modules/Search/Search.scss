@@ -1,0 +1,57 @@
+@import "../../shared/style/base";
+.ui.top.panel.search{
+    position: absolute;
+    left: 380px;
+    top: 10px;
+    input{
+        border-radius: 0;
+        border: none;
+        background: none;
+        width: 70px;
+        opacity: 0;
+        transition: width 0.7s;
+        color: #FFFFFF;
+        cursor: pointer;
+        &:focus{
+            width: 750px;
+            background: rgba(255,255,255, 0.2);
+            cursor: text;
+            border: 1px solid lightblue;
+            opacity: 1;
+        }
+        &::selection{
+            background: lightblue;
+            color: #FFFFFF;
+        }
+    }
+    i.search.icon{
+        color: #FFFFFF;
+        font-size: 1.5em;
+        &:before{
+            border-color: rgba(255,255,255,.15);
+        }
+        &:after{
+            border-color: #fff transparent transparent;
+        }
+    }
+    .result i{
+        color: $font-color-blue;
+    }
+    .results.transition.visible{
+        display: table !important;
+    }
+    & > .results > .category .result:last-child{
+        border-bottom: 1px solid rgba(34, 36, 38, 0.1) !important;
+    }
+    & > .results > .category .result{
+        background: #FFFFFF;        
+    border-left: 1px solid rgba(34,36,38,.15);
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: rgba(34, 36, 38, 0.15);
+    border-bottom: 1px solid rgba(34,36,38,.1);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(34, 36, 38, 0.1);
+    }
+}

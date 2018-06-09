@@ -1,0 +1,8 @@
+@import "../../../shared/style/base";
+.leaflet-control .ui.dropdown .menu > .header{
+    font-size: 1em;
+    background: $bg-color-blue;
+    color: $bg-color-light;
+    margin: 0;
+    padding: 1rem 1.14285714rem 0.75rem
+}

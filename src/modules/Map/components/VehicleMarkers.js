@@ -1,34 +1,35 @@
 import React from "react";
 import propTypes from "prop-types";
-import { Marker } from "react-leaflet";
+
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
-import markerIconFactory from "./../markers/markerIconFactory";
+import VehicleMarker from "./markers/VehicleMarker";
 
 import "../../../../node_modules/react-leaflet-markercluster/dist/styles.min.css";
+import MapService from "../../../service/MapService";
 
 
-const Markers = ({ vehicles, dispatch }) => (
+const VehicleMarkers = ({ state, dispatch }) => (
   <MarkerClusterGroup>
     {
-    vehicles.map(v => (
-      <Marker
+    state.map.vehicles.map(v => (
+      <VehicleMarker
+        selected={state.map.selectedVehicle === v.vehicleId}
         position={[v.lat, v.long]}
-        icon={markerIconFactory(3, false)}
         key={v.vehicleId}
+        title={v.plate}
         onclick={() => {
           dispatch.setSelectedVehicle(v.vehicleId);
           dispatch.setSidePanelVisibility(true);
-          dispatch.setActiveSidePanelTab(1);
+          dispatch.setActiveSidePanelTab(0);
+          const map = new MapService();
+          map.setCenter([v.lat, v.long]);
         }}
       />
     ))
 }
   </MarkerClusterGroup>
 );
-Markers.propTypes = {
-  vehicles: propTypes.arrayOf(propTypes.object).isRequired,
-};
 export const VehicleStates = {
   ENGINE_OFF: 0,
   IDLING: 1,
@@ -39,4 +40,4 @@ export const VehicleStates = {
   NO_CONNECTION_LONG: 6,
   UNKNOWN: 99,
 };
-export default Markers;
+export default VehicleMarkers;

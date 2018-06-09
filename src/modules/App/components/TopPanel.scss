@@ -6,13 +6,13 @@
     height: $top-panel-height;
     top: 0;
     left: 0;
-    opacity: 0.9;
+    // opacity: 0.9;
 
     padding-top: 5px;
     padding-left: 5px;
     z-index: $top-panel-z-index;
 
-    background: $bg-color-blue;
+    background: rgba($bg-color-blue, 0.9);
 
     & > img{
         height: 48px;

@@ -2,25 +2,24 @@
 import React from "react";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
-import { Map, TileLayer } from "react-leaflet";
+import { Map } from "react-leaflet";
 import Leaflet from "leaflet";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 
+import MapService from "./../../service/MapService";
+import MapTiles from "./components/MapTiles";
 import Loading from "./components/Loading";
 import MapControls from "./components/MapControls";
-import Markers from "./components/Markers";
+import VehicleMarkers from "./components/VehicleMarkers";
+import SearchMarker from "./components/markers/SearchMarker";
 
 import {
-  setMapZoom, setVehicleState, setSelectedVehicle, fetchVehicles,
+  setMapZoom, setVehicleState, setSelectedVehicle, fetchVehicles, setMapTile, toggleMapOverlay,
 } from "./Map.Actions";
 import { setSidePanelVisibility, setActiveSidePanelTab } from "./../App/App.Actions";
-
-
 import "./Map.scss";
 // #endregion
 
-const OSM_ATTRIBUTION = "<span class=\"copyright\">&copy;</span> <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
-const OSM_TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 class MapModule extends React.Component {
     static propTypes = {
@@ -32,27 +31,30 @@ class MapModule extends React.Component {
       super(props);
       this.mapProps = this.mapProps.bind(this);
       this.initBounds = this.initBounds.bind(this);
+      this.mapControls = this.mapControls.bind(this);
     }
-    state = { map: null }
     componentDidMount() {
-      const { dispatch, user } = this.props;
+      const { state, dispatch, user } = this.props;
       dispatch.fetchVehicles(user);
+      this.map = this.mapComp.leafletElement;
+      MapService._map = this.mapComp.leafletElement;
+      window._map = this.mapComp.leafletElement;
     }
     mapProps() {
       const { state, dispatch } = this.props;
       return {
-        // center: [40.9747381, 29.23450307],
         zoom: state.map.zoom,
         zoomControl: false,
         onZoom: e => dispatch.setMapZoom(e.target._zoom),
+        maxZoom: 18,
         bounds: this.initBounds(),
         animate: true,
-        ref: map => !this.state.map && this.setState({ map: map.leafletElement }),
+        ref: (map) => { this.mapComp = map; },
+        onClick: e => dispatch.setSelectedVehicle(null),
+
       };
     }
-    tileProps() {
-      return { attribution: OSM_ATTRIBUTION, url: OSM_TILE_URL };
-    }
+
     initBounds() {
       const { vehicles } = this.props.state.map;
       if (vehicles.length === 0) return Leaflet.latLngBounds([[60, -130], [-30, 150]]);
@@ -63,15 +65,29 @@ class MapModule extends React.Component {
         [Math.max(...latArr), Math.max(...longArr)],
       ]);
     }
+    mapControls() {
+      const map = new MapService();
+      const { dispatch } = this.props;
+      return {
+        zoomIn: (e) => { map.stopMapEvents(e); map.zoomIn(); },
+        zoomOut: (e) => { map.stopMapEvents(e); map.zoomOut(); },
+        resetViewport: (e) => { map.stopMapEvents(e); map.setBounds(this.initBounds()); },
+        setMapTile: (e, tile) => { dispatch.setMapTile(tile); },
+        switchOverlay: (e, overlay) => { map.switchOverlay(overlay); },
+      };
+    }
     render() {
       const { state, dispatch } = this.props;
-      console.log(`i am render: ${this.initBounds()}`);
+      console.log(state);
+      const { loading } = state.map;
+      console.log(`i am render: ${state.map.bounds}`);
       return (
-        <Map id="map-display" className={state.map.loading ? "loading" : ""} {...this.mapProps()}>
-          <Loading active={state.map.loading} />
-          <TileLayer {...this.tileProps()} />
-          <MapControls map={this.state.map} bounds={this.initBounds()} />
-          <Markers vehicles={state.map.vehicles} dispatch={dispatch} state={state} />
+        <Map id="map-display" {...this.mapProps()}>
+          <Loading active={loading} />
+          <MapControls state={state} {...this.mapControls()} />
+          <MapTiles state={state} />
+          <VehicleMarkers dispatch={dispatch} state={state} />
+          {state.map.searchMarker && <SearchMarker searchMarker={state.map.searchMarker} /> }
         </Map>
       );
     }
@@ -86,6 +102,8 @@ const dispatch2Props = dispatch => ({
     fetchVehicles: user => dispatch(fetchVehicles(user)),
     setSidePanelVisibility: value => dispatch(setSidePanelVisibility(value)),
     setActiveSidePanelTab: tabIndex => dispatch(setActiveSidePanelTab(tabIndex)),
+    setMapTile: mapTileName => dispatch(setMapTile(mapTileName)),
+    toggleMapOverlay: overlayName => dispatch(toggleMapOverlay(overlayName)),
   },
 });
 

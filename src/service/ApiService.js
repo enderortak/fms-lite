@@ -13,6 +13,7 @@ export default class ApiService {
   fetch(apiMethod, httpMethod, requestBody) {
     let requestUrl = `${this.apiUrl}/${apiMethod}`;
     if (httpMethod === "GET" && requestBody) requestUrl += `?${this.convertToUrlParams(requestBody)}`;
+    console.log("fetching data from ", requestUrl, " method: ", httpMethod);
     const requestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
