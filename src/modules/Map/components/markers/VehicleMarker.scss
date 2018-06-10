@@ -4,16 +4,17 @@
     position: relative;
     overflow: hidden;
     z-index: 1;
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     line-height: 25px;
     padding: 0;
-    background-color: gray;
+    background: radial-gradient(circle at 3px 3px, #5cabff, #000);
     border-radius: 50%;
     -webkit-transition: background-color .3s;
     transition: background-color .3s;
     cursor: pointer;
     vertical-align: middle;
+    overflow: visible;
 }
 .vehicle-marker-title{
     position: absolute !important;

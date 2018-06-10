@@ -6,3 +6,7 @@
     margin: 0;
     padding: 1rem 1.14285714rem 0.75rem
 }
+
+.leaflet-control > .ui.inverted.grey.menu > .active.item{
+  background: rgba(0, 0, 0, 0.5) !important;
+}

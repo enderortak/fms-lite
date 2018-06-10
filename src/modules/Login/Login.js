@@ -1,11 +1,9 @@
 import React from "react";
 import { Button, Form, Grid, Header, Icon, Message, Segment } from "semantic-ui-react";
-
-import logo from "./logo.svg";
-import bg from "./bg.jpg";
-import "./Login.scss";
-
 import AuthService from "./../../service/AuthService";
+import "./Login.scss";
+import bg from "./bg.jpg";
+
 
 export default class Login extends React.Component {
   constructor() {

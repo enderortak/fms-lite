@@ -1,10 +1,11 @@
 
-import React from "react";
 import moment from "moment";
+import React from "react";
 import { RadialGauge } from "react-canvas-gauges";
-import { Item, Label, Segment } from "semantic-ui-react";
+import { Grid, GridColumn, Item, Segment, Statistic } from "semantic-ui-react";
 import GeocodingService from "../../service/GeocodingService";
 import "./../../shared/style/fonts/grandnationalsuperital.css";
+import VehicleDataDisplay from "./components/VehicleDataDisplay";
 
 const geocoder = new GeocodingService();
 
@@ -63,13 +64,49 @@ export default class VehicleSidePanelDisplay extends React.Component {
                   <div>{this.state.street}</div>
                   <div>{this.state.district}</div>
                 </Item.Meta>
-                <Item.Extra>
-                  <Label icon="clock" content={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")} />
-                  <Label icon="marker" content={`${vehicle.lat},${vehicle.long}`} />
-                </Item.Extra>
               </Item.Content>
             </Item>
           </Item.Group>
+          <Grid>
+            <Grid.Row>
+              <GridColumn width={8}>
+                <VehicleDataDisplay label="PLAKA" value="34 TEST 01" />
+              </GridColumn>
+              <GridColumn width={8}>
+                <VehicleDataDisplay label="SÜRÜCÜ" value="Ahmet Öztürk" />
+              </GridColumn>
+            </Grid.Row>
+            <Grid.Row>
+              <GridColumn width={8}>
+                <VehicleDataDisplay label="VIN" value="JTHBK1EG3C25011011" />
+              </GridColumn>
+              <GridColumn width={8}>
+                <VehicleDataDisplay label="SON VERİ" value={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")} />
+              </GridColumn>
+            </Grid.Row>
+            <Grid.Row>
+              <GridColumn width={8}>
+                <VehicleDataDisplay label="KONUM" value={`${vehicle.lat},${vehicle.long}`} />
+              </GridColumn>
+              <GridColumn width={8} />
+            </Grid.Row>
+          </Grid>
+        </Segment>
+        <Segment inverted>
+          <Statistic.Group inverted size="mini">
+            <Statistic>
+              <Statistic.Value>{vehicle.speed}</Statistic.Value>
+              <Statistic.Label>HIZ (KM/S)</Statistic.Label>
+            </Statistic>
+            <Statistic>
+              <Statistic.Value>31,200</Statistic.Value>
+              <Statistic.Label>TOPLAM <br /> MESAFE (KM)</Statistic.Label>
+            </Statistic>
+            <Statistic>
+              <Statistic.Value>145</Statistic.Value>
+              <Statistic.Label>GÜNLÜK <br />MESAFE (KM)</Statistic.Label>
+            </Statistic>
+          </Statistic.Group>
         </Segment>
         <Segment style={{
         //  background: "#222",

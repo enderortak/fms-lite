@@ -1,10 +1,16 @@
 
 import L from "leaflet";
 import "leaflet-providers";
-import { OSMMapTile, HEREMapTile, HEREOverlay } from "./MapTileProviders";
+import initMeasurePlugin from "./../util/leaflet.measure";
+import { HEREMapTile, HEREOverlay, OSMMapTile } from "./MapTileProviders";
+
 
 export default class MapService {
     static _map = null;
+
+    constructor() {
+      initMeasurePlugin();
+    }
     stopMapEvents(e) {
       L.DomEvent.stop(e);
     }
@@ -34,16 +40,33 @@ export default class MapService {
       layers.filter(i => i.options.layerType === "map-tile").forEach(i => MapService._map.removeLayer(i));
       tile.addTo(MapService._map);
     }
-    switchOverlay(overlay) {
-      overlay.addTo(MapService._map);
+    showOverlay(overlayName) {
+      MapService.mapOverlays[overlayName].overlay.addTo(MapService._map);
     }
-    // normal.day
-    // normal.day.grey
-    // normal.day.transit
-    // normal.night.transit
-    // normal.day.custom
-    // normal.night
-    // normal.night.grey
+    hideOverlay(overlayName) {
+      MapService.mapOverlays[overlayName].overlay.removeFrom(MapService._map);
+    }
+    getMetersPerPixel() {
+      return (
+        40075016.686 *
+        (
+          Math.abs(Math.cos((MapService._map.getCenter().lat * 180) / Math.PI))
+          /
+          ((MapService._map.getZoom() + 8) ** 2)
+        )
+      );
+    }
+    getMapWidthInKilometers() {
+      // return Math.round((MapService._map.getSize().y * this.getMetersPerPixel()) / 1000);
+
+      const center = MapService._map.getCenter();
+      const westLong = MapService._map.getBounds().getWest();
+      const west = L.latLng({ lat: center.lat, lng: westLong });
+      return Math.round((west.distanceTo(center) * 2) / 1000);
+    }
+    measureControl(toggleMeasure) {
+      return L.control.measure({ toggleMeasure });
+    }
     static mapTiles = {
       osm: {
         label: "Sokak Görünümü (OSM)",
@@ -53,19 +76,17 @@ export default class MapService {
         label: "Sokak Görünümü (HERE)",
         tile: new HEREMapTile("normal.day", { name: "here.normal.day", layerType: "map-tile" }),
       },
-      "here.normal.day.transit": {
-        label: "Sokak Görünümü - t (HERE)",
-        tile: new HEREMapTile("normal.day.transit", { name: "here.normal.day.transit", layerType: "map-tile" }),
+      "here.satellite.day": {
+        label: "Uydu Görünümü (HERE)",
+        tile: new HEREMapTile("satellite.day", { base: "aerial", name: "here.satellite.day", layerType: "map-tile" }),
       },
       "here.hybrid.day": {
-        type: "map-tile",
         label: "Uydu-Sokak Hibrit Görünüm (HERE)",
-        tile: new HEREMapTile("hybrid.day", { base: "aerial", name: "here.hybrid.day", type: "map-tile" }),
+        tile: new HEREMapTile("hybrid.day", { base: "aerial", name: "here.hybrid.day", layerType: "map-tile" }),
       },
-      "otm.topo": {
-        type: "map-tile",
-        label: "Topoğrafik Harita (OTM)",
-        tile: L.tileLayer.provider("OpenTopoMap"),
+      "here.terrain.day": {
+        label: "Topoğrafik Görünüm (HERE)",
+        tile: new HEREMapTile("terrain.day", { base: "aerial", name: "here.terrain.day", layerType: "map-tile" }),
       },
     }
     static mapOverlays = {

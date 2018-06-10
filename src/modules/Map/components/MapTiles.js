@@ -1,7 +1,5 @@
-import React from "react";
-import L from "leaflet";
 import "leaflet-providers";
-import { TileLayer } from "react-leaflet";
+import React from "react";
 import MapService from "../../../service/MapService";
 
 export default class MapTiles extends React.Component {
@@ -10,13 +8,22 @@ export default class MapTiles extends React.Component {
     const { state } = this.props;
     if (MapService._map) {
       map.switchMapTile(MapService.mapTiles[state.map.mapTile].tile);
+      Object.keys(this.props.state.map.overlays).forEach((i) => {
+        if (this.props.state.map.overlays[i]) map.showOverlay(i);
+      });
     }
   }
   componentDidUpdate(prevProps) {
-    const mapService = new MapService();
+    const map = new MapService();
     if (this.props.state.map.mapTile !== prevProps.state.map.mapTile) {
-      mapService.switchMapTile(MapService.mapTiles[this.props.state.map.mapTile].tile);
+      map.switchMapTile(MapService.mapTiles[this.props.state.map.mapTile].tile);
     }
+    Object.keys(this.props.state.map.overlays).forEach((i) => {
+      if (this.props.state.map.overlays[i] !== prevProps.state.map.overlays[i]) {
+        if (this.props.state.map.overlays[i]) map.showOverlay(i);
+        else map.hideOverlay(i);
+      }
+    });
   }
   render() {
     return null;

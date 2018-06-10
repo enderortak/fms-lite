@@ -1,6 +1,6 @@
 import React from "react";
-import NotificationService from "./NotificationService";
 import AuthService from "./AuthService";
+import NotificationService from "./NotificationService";
 
 const APP_API_URL = "http://localhost:3000/api";
 
@@ -17,15 +17,14 @@ export default class ApiService {
     const requestHeaders = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: this.auth.loggedIn() ? `Bearer ${this.auth.getToken()}` : undefined,
+      // Authorization: this.auth.loggedIn() ? `Bearer ${this.auth.getToken()}` : undefined,
       "Access-Control-Allow-Origin": "*",
     };
     const requestOptions = {
-      // headers: requestHeaders,
+      headers: requestHeaders,
       method: httpMethod,
       body: httpMethod === "GET" ? undefined : JSON.stringify(requestBody),
     };
-
     return fetch(requestUrl, requestOptions)
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);

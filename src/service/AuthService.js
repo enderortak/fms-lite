@@ -1,5 +1,5 @@
-import React from "react";
 import decode from "jwt-decode";
+import React from "react";
 import ApiService from "./ApiService";
 
 export default class AuthService {

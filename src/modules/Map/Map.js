@@ -1,23 +1,21 @@
 // #region imports
-import React from "react";
-import propTypes from "prop-types";
-import { connect } from "react-redux";
-import { Map } from "react-leaflet";
 import Leaflet from "leaflet";
+import propTypes from "prop-types";
+import React from "react";
+import { Map } from "react-leaflet";
+import { connect } from "react-redux";
 import "../../../node_modules/leaflet/dist/leaflet.css";
-
 import MapService from "./../../service/MapService";
-import MapTiles from "./components/MapTiles";
+import { setActiveSidePanelTab, setSidePanelVisibility } from "./../App/App.Actions";
+import { fetchVehicles, setMapTile, setMapZoom, setSelectedVehicle, setVehicleState, toggleMapOverlay } from "./Map.Actions";
+import "./Map.scss";
 import Loading from "./components/Loading";
 import MapControls from "./components/MapControls";
+import MapTiles from "./components/MapTiles";
 import VehicleMarkers from "./components/VehicleMarkers";
 import SearchMarker from "./components/markers/SearchMarker";
 
-import {
-  setMapZoom, setVehicleState, setSelectedVehicle, fetchVehicles, setMapTile, toggleMapOverlay,
-} from "./Map.Actions";
-import { setSidePanelVisibility, setActiveSidePanelTab } from "./../App/App.Actions";
-import "./Map.scss";
+
 // #endregion
 
 
@@ -31,7 +29,7 @@ class MapModule extends React.Component {
       super(props);
       this.mapProps = this.mapProps.bind(this);
       this.initBounds = this.initBounds.bind(this);
-      this.mapControls = this.mapControls.bind(this);
+      // this.mapControls = this.mapControls.bind(this);
     }
     componentDidMount() {
       const { state, dispatch, user } = this.props;
@@ -47,6 +45,7 @@ class MapModule extends React.Component {
         zoomControl: false,
         onZoom: e => dispatch.setMapZoom(e.target._zoom),
         maxZoom: 18,
+        minZoom: 3,
         bounds: this.initBounds(),
         animate: true,
         ref: (map) => { this.mapComp = map; },
@@ -65,17 +64,17 @@ class MapModule extends React.Component {
         [Math.max(...latArr), Math.max(...longArr)],
       ]);
     }
-    mapControls() {
-      const map = new MapService();
-      const { dispatch } = this.props;
-      return {
-        zoomIn: (e) => { map.stopMapEvents(e); map.zoomIn(); },
-        zoomOut: (e) => { map.stopMapEvents(e); map.zoomOut(); },
-        resetViewport: (e) => { map.stopMapEvents(e); map.setBounds(this.initBounds()); },
-        setMapTile: (e, tile) => { dispatch.setMapTile(tile); },
-        switchOverlay: (e, overlay) => { map.switchOverlay(overlay); },
-      };
-    }
+    // mapControls() {
+    //   const map = new MapService();
+    //   const { dispatch } = this.props;
+    //   return {
+    //     zoomIn: (e) => { map.stopMapEvents(e); map.zoomIn(); },
+    //     zoomOut: (e) => { map.stopMapEvents(e); map.zoomOut(); },
+    //     resetViewport: (e) => { map.stopMapEvents(e); map.setBounds(this.initBounds()); },
+    //     setMapTile: (e, tileName) => { map.stopMapEvents(e); dispatch.setMapTile(tileName); },
+    //     toggleMapOverlay: (e, overlayName) => { map.stopMapEvents(e); dispatch.toggleMapOverlay(overlayName); },
+    //   };
+    // }
     render() {
       const { state, dispatch } = this.props;
       console.log(state);
@@ -84,7 +83,7 @@ class MapModule extends React.Component {
       return (
         <Map id="map-display" {...this.mapProps()}>
           <Loading active={loading} />
-          <MapControls state={state} {...this.mapControls()} />
+          <MapControls state={state} dispatch={dispatch} />
           <MapTiles state={state} />
           <VehicleMarkers dispatch={dispatch} state={state} />
           {state.map.searchMarker && <SearchMarker searchMarker={state.map.searchMarker} /> }
