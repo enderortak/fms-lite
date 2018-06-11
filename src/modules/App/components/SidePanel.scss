@@ -33,9 +33,11 @@ $side-panel-toggler-width: 3rem;
     border-bottom-left-radius: 1rem;
 
     background: #9a9a9a;
-    opacity: 0.35;
+    opacity: 0.45;
     cursor: pointer;
-
+    &:hover{
+      opacity: 0.8;
+    }
     i {
       font-size: $side-panel-toggler-height/3;
       line-height: $side-panel-toggler-height;

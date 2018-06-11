@@ -24,7 +24,7 @@ export default class SidePanel extends React.Component {
     return [
       [
         <Menu.Item key="Tab 1"><i className="ui icon ui-icon-truck-front" /> Araç</Menu.Item>,
-        <Tab.Pane><VehicleSidePanelDisplay
+        <Tab.Pane as="div"><VehicleSidePanelDisplay
           vehicle={state.map.vehicles.filter(v => v.vehicleId === state.map.selectedVehicle)[0]}
         />
         </Tab.Pane>,
@@ -56,7 +56,7 @@ export default class SidePanel extends React.Component {
           <Icon name={`chevron ${state.app.sidePanel.visible ? "right" : "left"}`} />
         </div>
         <Tab
-          menu={{ icon: "labeled" }}
+          menu={{ icon: "labeled", style: { margin: "0" } }}
           panes={this.panes().map(i => ({ menuItem: i[0], render: () => i[1] }))}
           activeIndex={state.app.sidePanel.activeTabIndex}
           onTabChange={(e, { activeIndex }) => dispatch.setActiveSidePanelTab(activeIndex)}

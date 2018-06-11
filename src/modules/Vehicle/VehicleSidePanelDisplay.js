@@ -1,155 +1,70 @@
 
 import moment from "moment";
 import React from "react";
-import { RadialGauge } from "react-canvas-gauges";
-import { Grid, GridColumn, Item, Segment, Statistic } from "semantic-ui-react";
+import { Grid, GridColumn, Item, Segment, Tab } from "semantic-ui-react";
 import GeocodingService from "../../service/GeocodingService";
-import "./../../shared/style/fonts/grandnationalsuperital.css";
 import VehicleDataDisplay from "./components/VehicleDataDisplay";
+import Showcase from "./components/Showcase";
 
 const geocoder = new GeocodingService();
 
-const lightTheme = {
-  highlights: [{ from: 110, to: 130, color: "rgba(0, 52, 120, .75)" }],
-  colorPlate: "#FFF",
-  colorMajorTicks: "#bbe0ec",
-  colorMinorTicks: "#9fbcc5",
-  colorTitle: "#fff",
-  colorUnits: "rgba(0, 52, 120, .75)",
-  colorNumbers: "rgba(0, 52, 120, .75)",
-  colorNeedleStart: "rgba(240, 128, 128, 1)",
-  colorNeedleEnd: "rgba(255, 160, 122, .9)",
-  colorNeedleShadowDown: "#333",
-};
-
-const darkTheme = {
-  highlights: [{ from: 110, to: 130, color: "rgba(200, 50, 50, .75)" }],
-  colorPlate: "#222",
-  colorMajorTicks: "#f5f5f5",
-  colorMinorTicks: "#ddd",
-  colorTitle: "#fff",
-  colorUnits: "#ccc",
-  colorNumbers: "lightblue",
-  colorNeedleStart: "rgba(240, 128, 128, 1)",
-  colorNeedleEnd: "rgba(255, 160, 122, .9)",
-  colorNeedleShadowDown: "#333",
-};
 
 export default class VehicleSidePanelDisplay extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { street: "", district: "" };
-    // this.renderVehicleDisplay = this.renderVehicleDisplay.bind(this);
+    this.state = { street: "", district: "", activeTab: 0 };
+    this.renderVehicleDisplay = this.renderVehicleDisplay.bind(this);
+    this.panes = this.panes.bind(this);
   }
-  componentWillUpdate(nextProps) {
-    if (
-      nextProps.vehicle &&
-        (!this.props.vehicle || this.props.vehicle.vehicleId !== nextProps.vehicle.vehicleId)
-    ) {
+
+  componentDidMount() {
+    if (this.props.vehicle) {
       this.setState({ street: "", district: "" });
-      geocoder.reverse(nextProps.vehicle.lat, nextProps.vehicle.long)
+      geocoder.reverse(this.props.vehicle.lat, this.props.vehicle.long)
         .then(result => this.setState({ street: result.street, district: result.district }));
     }
   }
-  renderVehicleDisplay(vehicle) {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.vehicle &&
+        (!prevProps.vehicle || prevProps.vehicle.vehicleId !== this.props.vehicle.vehicleId)
+    ) {
+      this.setState({ street: "", district: "" });
+      geocoder.reverse(this.props.vehicle.lat, this.props.vehicle.long)
+        .then(result => this.setState({ street: result.street, district: result.district }));
+    }
+  }
+
+  panes() {
+    const { vehicle } = this.props;
+    return [
+      {
+        menuItem: "Durum",
+        render: () => (
+          <Tab.Pane
+            attached={false}
+            as={Showcase}
+            plate={vehicle.plate}
+            speed={vehicle.speed}
+            lat={vehicle.lat}
+            long={vehicle.long}
+            street={this.state.street}
+            district={this.state.district}
+            lastcomm={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")}
+          />
+        ),
+      },
+      { menuItem: "Bildirimler", render: () => <Tab.Pane attached={false}>Tab 2 Content</Tab.Pane> },
+      { menuItem: "Geçmiş", render: () => <Tab.Pane attached={false}>Tab 3 Content</Tab.Pane> },
+      { menuItem: "Hızlı Raporlar", render: () => <Tab.Pane attached={false}>Tab 4 Content</Tab.Pane> },
+      { menuItem: "Ayarlar", render: () => <Tab.Pane attached={false}>Tab 5 Content</Tab.Pane> },
+    ];
+  }
+  renderVehicleDisplay() {
+    const { vehicle } = this.props;
     return (
       <React.Fragment>
-        <Segment>
-          <Item.Group>
-            <Item>
-              <i className="ui huge icon ui-icon-truck-front" />
-              <Item.Content style={{ width: "calc(100% - 4em)" }}>
-                <Item.Header>{vehicle.plate}</Item.Header>
-                <Item.Meta style={{ minHeight: "3em" }}>
-                  <div>{this.state.street}</div>
-                  <div>{this.state.district}</div>
-                </Item.Meta>
-              </Item.Content>
-            </Item>
-          </Item.Group>
-          <Grid>
-            <Grid.Row>
-              <GridColumn width={8}>
-                <VehicleDataDisplay label="PLAKA" value="34 TEST 01" />
-              </GridColumn>
-              <GridColumn width={8}>
-                <VehicleDataDisplay label="SÜRÜCÜ" value="Ahmet Öztürk" />
-              </GridColumn>
-            </Grid.Row>
-            <Grid.Row>
-              <GridColumn width={8}>
-                <VehicleDataDisplay label="VIN" value="JTHBK1EG3C25011011" />
-              </GridColumn>
-              <GridColumn width={8}>
-                <VehicleDataDisplay label="SON VERİ" value={moment(vehicle.lastPositionUpdate, "YYYYMMDDHHmmss").format("DD.MM.YYYY HH:mm")} />
-              </GridColumn>
-            </Grid.Row>
-            <Grid.Row>
-              <GridColumn width={8}>
-                <VehicleDataDisplay label="KONUM" value={`${vehicle.lat},${vehicle.long}`} />
-              </GridColumn>
-              <GridColumn width={8} />
-            </Grid.Row>
-          </Grid>
-        </Segment>
-        <Segment inverted>
-          <Statistic.Group inverted size="mini">
-            <Statistic>
-              <Statistic.Value>{vehicle.speed}</Statistic.Value>
-              <Statistic.Label>HIZ (KM/S)</Statistic.Label>
-            </Statistic>
-            <Statistic>
-              <Statistic.Value>31,200</Statistic.Value>
-              <Statistic.Label>TOPLAM <br /> MESAFE (KM)</Statistic.Label>
-            </Statistic>
-            <Statistic>
-              <Statistic.Value>145</Statistic.Value>
-              <Statistic.Label>GÜNLÜK <br />MESAFE (KM)</Statistic.Label>
-            </Statistic>
-          </Statistic.Group>
-        </Segment>
-        <Segment style={{
-        //  background: "#222",
-         background: "#FFF",
-         height: "17rem",
-        overflow: "hidden",
-        textAlign: "center",
-        }}
-        >
-          <RadialGauge
-            height={300}
-            width={300}
-            units="Km/h"
-            title={false}
-            animateOnInit
-            value={vehicle.speed}
-            minValue={0}
-            maxValue={130}
-            exactTicks
-            majorTicks={[0, 10, 30, 50, 70, 90, 110, 130]}
-            minorTicks={2}
-            strokeTicks
-            valueBox={false}
-            //   fontValue="Repetition"
-            fontNumbers="Grand National Super-Italic"
-            fontUnits="Grand National Super-Italic"
-                // fontNumbersSize="16"
-            animatedValue
-            borders={false}
-            borderShadowWidth={0}
-            needleType="arrow"
-            needleWidth={2}
-            needleCircleSize={7}
-            needleCircleOuter
-            needleCircleInner={false}
-            animationDuration={500}
-            animationRule="linear"
-            ticksAngle={200}
-            startAngle={80}
-            valueBoxWidth={45}
-            {...lightTheme}
-          />
-        </Segment>
+        <Showcase />
       </React.Fragment>
     );
   }
@@ -158,7 +73,7 @@ export default class VehicleSidePanelDisplay extends React.Component {
     return (
       <React.Fragment>
         {!vehicle && <Segment>Seçili araç yok</Segment>}
-        {vehicle && this.renderVehicleDisplay(vehicle)}
+        {vehicle && <Tab menu={{ secondary: true, pointing: true, style: { marginBottom: "0" } }} panes={this.panes()} />}
       </React.Fragment>
     );
   }
