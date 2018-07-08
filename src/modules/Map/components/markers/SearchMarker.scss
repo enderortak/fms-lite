@@ -1,12 +1,18 @@
-.leaflet-tooltip-pane .leaflet-tooltip{
-    background: none;
-    border: none;
-    box-shadow: none;
-    font-size: 1.5em;
-    font-weight: bold;
-    text-shadow:1px 1px 10px #fff, 1px 1px 10px #ccc;
-    &:before{
-        border: none;
-        background: none;
+@import "../../../../shared/style/base";
+#search-marker {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    .marker-label{
+        text-align: center;
+    }
+    i{
+        margin: .25em 0 0 0;
+        font-size: 3em;
+        color: adjust-color($color: $font-color-blue, $alpha: 0.9);
+        line-height: 1em;
+        text-shadow: 2px 2px #FFFFFF, -2px -2px #FFFFFF, -2px 2px #FFFFFF, 2px -2px #FFFFFE,
     }
 }

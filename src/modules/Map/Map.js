@@ -4,6 +4,7 @@ import propTypes from "prop-types";
 import React from "react";
 import { Map } from "react-leaflet";
 import { connect } from "react-redux";
+import userPropType from "./../../types/user";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 import MapService from "./../../service/MapService";
 import { setActiveSidePanelTab, setSidePanelVisibility } from "./../App/App.Actions";
@@ -23,6 +24,7 @@ class MapModule extends React.Component {
     static propTypes = {
       state: propTypes.object.isRequired,
       dispatch: propTypes.object.isRequired,
+      user: userPropType.isRequired,
     }
 
     constructor(props) {
@@ -32,7 +34,7 @@ class MapModule extends React.Component {
       // this.mapControls = this.mapControls.bind(this);
     }
     componentDidMount() {
-      const { state, dispatch, user } = this.props;
+      const { dispatch, user } = this.props;
       dispatch.fetchVehicles(user);
       this.map = this.mapComp.leafletElement;
       MapService._map = this.mapComp.leafletElement;
@@ -49,7 +51,7 @@ class MapModule extends React.Component {
         bounds: this.initBounds(),
         animate: true,
         ref: (map) => { this.mapComp = map; },
-        onClick: e => dispatch.setSelectedVehicle(null),
+        onClick: () => dispatch.setSelectedVehicle(null),
 
       };
     }
@@ -64,17 +66,6 @@ class MapModule extends React.Component {
         [Math.max(...latArr), Math.max(...longArr)],
       ]);
     }
-    // mapControls() {
-    //   const map = new MapService();
-    //   const { dispatch } = this.props;
-    //   return {
-    //     zoomIn: (e) => { map.stopMapEvents(e); map.zoomIn(); },
-    //     zoomOut: (e) => { map.stopMapEvents(e); map.zoomOut(); },
-    //     resetViewport: (e) => { map.stopMapEvents(e); map.setBounds(this.initBounds()); },
-    //     setMapTile: (e, tileName) => { map.stopMapEvents(e); dispatch.setMapTile(tileName); },
-    //     toggleMapOverlay: (e, overlayName) => { map.stopMapEvents(e); dispatch.toggleMapOverlay(overlayName); },
-    //   };
-    // }
     render() {
       const { state, dispatch } = this.props;
       console.log(state);
@@ -83,7 +74,7 @@ class MapModule extends React.Component {
       return (
         <Map id="map-display" {...this.mapProps()}>
           <Loading active={loading} />
-          <MapControls state={state} dispatch={dispatch} />
+          <MapControls state={state} dispatch={dispatch} initBounds={this.initBounds()} />
           <MapTiles state={state} />
           <VehicleMarkers dispatch={dispatch} state={state} />
           {state.map.searchMarker && <SearchMarker searchMarker={state.map.searchMarker} /> }
@@ -96,7 +87,7 @@ const state2Props = state => ({ state });
 const dispatch2Props = dispatch => ({
   dispatch: {
     setMapZoom: zoom => dispatch(setMapZoom(zoom)),
-    setSelectedVehicle: vehicleId => dispatch(setSelectedVehicle(vehicleId)),
+    setSelectedVehicle: vin => dispatch(setSelectedVehicle(vin)),
     setVehicleState: (vehicle, state) => dispatch(setVehicleState(vehicle, state)),
     fetchVehicles: user => dispatch(fetchVehicles(user)),
     setSidePanelVisibility: value => dispatch(setSidePanelVisibility(value)),

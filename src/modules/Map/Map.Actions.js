@@ -1,9 +1,10 @@
-import React from "react";
-import ApiService, { fetchApi } from "./../../service/ApiService";
-import NotificationService from "./../../service/NotificationService";
-import TutorialNotification from "./components/TutorialNotification";
 
-const notify = new NotificationService();
+import ApiService from "./../../service/ApiService";
+import NotificationService from "./../../service/NotificationService";
+import AuthService from "../../service/AuthService";
+
+
+const notify = new NotificationService(); // eslint-disable-line
 
 export const SET_MAP_TILE = "SET_MAP_TILE";
 export const TOGGLE_MAP_OVERLAY = "TOGGLE_MAP_OVERLAY";
@@ -20,16 +21,15 @@ export const FETCH_VEHICLES_SUCCESS = "FETCH_VEHICLES_SUCCESS";
 export const FETCH_VEHICLES_FAILURE = "FETCH_VEHICLES_FAILURE";
 
 
-export const fetchVehicles = user => (dispatch) => {
+export const fetchVehicles = () => (dispatch) => {
   dispatch(fetchVehiclesBegin());
   const api = new ApiService();
-  api.fetch(`vehicles/${user.username}`, "GET")
+  const auth = new AuthService();
+  api.fetch(`vehicles/${auth.getProfile().username}`, "GET")
     .then((result) => {
-      setTimeout(() => {
-        dispatch(fetchVehiclesSuccess(result));
-        notify.simple(<TutorialNotification />, { type: "info", autoClose: false, closeOnClick: false });
-        return result;
-      }, 2000);
+      dispatch(fetchVehiclesSuccess(result));
+      // notify.simple(<TutorialNotification />, { type: "info", autoClose: false, closeOnClick: false });
+      return result;
     })
     .catch(error => dispatch(fetchVehiclesFailure(error)));
 };
@@ -37,12 +37,12 @@ const fetchVehiclesBegin = () => ({ type: FETCH_VEHICLES_BEGIN });
 const fetchVehiclesSuccess = vehicles => ({ type: FETCH_VEHICLES_SUCCESS, vehicles });
 const fetchVehiclesFailure = error => ({ type: FETCH_VEHICLES_FAILURE, error });
 
-export const setSelectedVehicle = (vehicleId, latlon) => (dispatch) => {
+export const setSelectedVehicle = (vin, latlon) => (dispatch) => {
   if (latlon) {
     dispatch(setMapCenter(latlon));
     dispatch(setMapZoom(17));
   }
-  dispatch(({ type: SET_SELECTED_VEHICLE, vehicleId }));
+  dispatch(({ type: SET_SELECTED_VEHICLE, vin }));
 };
 
 export const setMapZoom =

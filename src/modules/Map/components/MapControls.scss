@@ -1,12 +1,16 @@
 @import "../../../shared/style/base";
-.leaflet-control .ui.dropdown .menu > .header{
-    font-size: 1em;
-    background: $bg-color-blue;
-    color: $bg-color-light;
-    margin: 0;
-    padding: 1rem 1.14285714rem 0.75rem
-}
-
-.leaflet-control > .ui.inverted.grey.menu > .active.item{
-  background: rgba(0, 0, 0, 0.5) !important;
+.leaflet-control {
+    #map-control-bar {
+      opacity: 0.8;
+        .ui.dropdown .menu>.header {
+            font-size: 1em;
+            background: $bg-color-blue;
+            color: $bg-color-light;
+            margin: 0;
+            padding: 1rem 1.14285714rem 0.75rem
+        }
+        .active.item {
+            background: rgba(0, 0, 0, 0.1) !important;
+        }
+    }
 }

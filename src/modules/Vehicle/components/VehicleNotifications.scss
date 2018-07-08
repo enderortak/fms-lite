@@ -1,0 +1,14 @@
+#vehicle-notification-feed{
+    & > .event > .label + .content{
+        margin-top: 0;
+    }
+    & > .event:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .ui.accordion .title:not(.ui){
+        padding: 0;
+    }
+    .ui.accordion .content{
+        font-weight: normal;
+    }
+}

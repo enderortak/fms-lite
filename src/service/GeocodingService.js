@@ -10,7 +10,7 @@ export default class GeocodingService {
     // this.osmAutoCompleteApi = new ApiService("http://photon.komoot.de");
   }
   reverse(lat, lon) {
-    console.log("Reverse geocoding ", lat, ", ", lon, "...");
+    console.log("Reverse geocoding ", lat, ", ", lon, "via yandex...");
     return this.api.geocode([lat, lon], { json: true, results: 1 })
       .then((result) => {
         console.log("Reverse geocoding complete! Here is the result: ", result);
@@ -33,6 +33,16 @@ export default class GeocodingService {
       return this.api.suggest(query)
         .then(result =>
           result.map(i => ({ name: i.displayName.split(",")[0], meta: i.value })));
+    } else if (provider === "here") {
+      const apiService = new ApiService("http://autocomplete.geocoder.cit.api.here.com/6.2");
+      apiService.fetch("suggest.json", "GET", {
+        app_id: "X4lVXpDwqP4dPmS54lsX",
+        app_code: "LZM8c_OBu09khbAkko5mrA",
+        query,
+        beginHighlight: "<b>",
+        endHighlight: "<b>",
+      }).then(result =>
+        result.map(i => ({ name: i.label.split(",")[0], meta: i.label })));
     }
     return [];
   }

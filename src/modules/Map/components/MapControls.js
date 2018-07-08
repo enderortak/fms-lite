@@ -13,8 +13,7 @@ export default class MapControls extends React.Component {
     this.setMapTile = this.setMapTile.bind(this);
     this.toggleMapOverlay = this.toggleMapOverlay.bind(this);
     this.measure = map.measureControl(this.toggleMeasure);
-    this.toggleMeasure = this.toggleMeasure.bind(this);
-    this.state = { measuring: false };
+    this.resetViewport = this.resetViewport.bind(this);
   }
   setMapTile(e, tileName) {
     map.stopMapEvents(e);
@@ -34,27 +33,16 @@ export default class MapControls extends React.Component {
   }
   resetViewport(e) {
     map.stopMapEvents(e);
-    map.setBounds(this.initBounds());
-  }
-  toggleMeasure(e) {
-    if (e) map.stopMapEvents(e);
-    this.measure._measuring = !this.measure._measuring;
-    if (this.measure._measuring) {
-      this.setState({ measuring: true });
-      this.measure._startMeasuring();
-    } else {
-      this.setState({ measuring: false });
-      this.measure._stopMeasuring();
-    }
+    map.setBounds(this.props.initBounds);
   }
   render() {
     const { state } = this.props;
     const {
-      zoomIn, zoomOut, resetViewport, setMapTile, toggleMapOverlay, toggleMeasure,
+      zoomIn, zoomOut, resetViewport, setMapTile, toggleMapOverlay,
     } = this;
     return (
       <Control position="bottomleft">
-        <Menu icon compact color="grey" inverted style={{ opacity: "0.8" }}>
+        <Menu icon compact color="grey" inverted id="map-control-bar">
           <Menu.Item as="a" onClick={zoomIn}>
             <Icon name="plus" />
           </Menu.Item>

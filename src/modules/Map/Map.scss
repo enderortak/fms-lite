@@ -4,21 +4,9 @@
 #map-display{
     position: fixed;
     width: 100%;
-    // height: calc(100% - #{$top-panel-height});
     height: 100%;
     left: 0;
     top: 0;
-    // top: $top-panel-height;
-
-    /*@include flex(1);
-    @include flexboxContainer(row, nowrap, center, stretch);
-     Set up positioning 
-    // position: fixed;
-    // top: 0;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;*/
-    
     & > *{
         height: 100%;
     }

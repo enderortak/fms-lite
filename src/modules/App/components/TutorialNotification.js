@@ -1,22 +1,23 @@
 import React from "react";
 import { Header, Icon, Checkbox } from "semantic-ui-react";
+import "./TutorialNotification.scss";
 
 const checkboxLabel = (
-  <label style={{ color: "#FFFFFF" }} >Tekrar gösterme</label>
+  <label >Tekrar gösterme</label>
 );
 
 const TutorialNotification = () => (
   <React.Fragment>
-    <Header inverted as="h4" style={{ margin: "0.5rem 1rem" }}>
-      <Icon name="info circle" style={{ fontSize: "2em" }} />
+    <Header id="tutorial-notification-message" inverted as="h4">
+      <Icon name="info circle" />
       <Header.Content>
         Ford Trucks filo takip sistemine hoşgeldiniz
-        <Header.Subheader style={{ marginTop: "0.5em" }}>
+        <Header.Subheader>
             Filo takip sistemi öğreticisi ile hızlı bir başlangıç yapabilirsiniz
         </Header.Subheader>
       </Header.Content>
     </Header>
-    <Checkbox label={checkboxLabel} style={{ float: "right" }} />
+    <Checkbox label={checkboxLabel} className="dont-show" />
   </React.Fragment>
 );
 

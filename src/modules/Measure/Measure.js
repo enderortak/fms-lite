@@ -263,6 +263,13 @@ export default class Measure extends React.Component {
     return `${Math.round((val / 1000) * 100) / 100}km`;
   }
   render() {
-    return <Menu.Item ref={(elem) => { this.elem = elem; }} onClick={this.toggleMeasure} icon="arrows alternate horizontal" active={this.measuring} />;
+    return (
+      <Menu.Item
+        ref={(elem) => { this.elem = elem; }}
+        onClick={this.toggleMeasure}
+        icon="arrows alternate horizontal"
+        active={this.measuring}
+      />
+    );
   }
 }

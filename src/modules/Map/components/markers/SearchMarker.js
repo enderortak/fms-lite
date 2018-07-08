@@ -1,22 +1,26 @@
 import React from "react";
+import propTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
-import { Icon, Label, Popup } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 
 import ReactIcon from "./ReactIcon";
 import "./SearchMarker.scss";
 
 export default class SearchMarker extends React.Component {
+  static propTypes = {
+    searchMarker: propTypes.shape({
+      label: propTypes.string.isRequired,
+      latlon: propTypes.arrayOf(propTypes.number).isRequired,
+    }).isRequired,
+  }
   icon() {
     const { label } = this.props.searchMarker;
     const iconComponent = (
       <ReactIcon>
-        <div style={{
- width: "100%", height: "100%", display: "flex", flexDirection: "column-reverse", alignItems: "center",
-}}
-        >
-          <div style={{ textAlign: "center" }}>
+        <div id="search-marker">
+          <div className="marker-label">
             {label && <Label size="large" basic color="blue" >{label}</Label>}
             <Icon
               name="map marker alternate"

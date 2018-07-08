@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 import { Search, Icon } from "semantic-ui-react";
 import _ from 'lodash';
 import GeocodingService from "../../service/GeocodingService";
@@ -7,6 +8,10 @@ import "./Search.scss";
 
 
 export default class SearchComponent extends React.Component {
+  static propTypes = {
+    dispatch: propTypes.object.isRequired,
+    state: propTypes.object.isRequired,
+  }
   componentWillMount() {
     this.resetComponent();
   }
@@ -24,12 +29,12 @@ export default class SearchComponent extends React.Component {
       dispatch.setSearchMarker(result.title, [geo.marker[1], geo.marker[0]]);
       map.setBounds([geo.bounds.corner1, geo.bounds.corner2]);
     } else if (result.category === "vehicle") {
-      console.log("Vehicle selected (", result.vehicleId, "), centering the map to ", result.latlon);
+      console.log("Vehicle selected (", result.vin, "), centering the map to ", result.latlon);
 
       map.setView(result.latlon, 16);
-      dispatch.setSelectedVehicle(result.vehicleId);
+      dispatch.setSelectedVehicle(result.vin);
       dispatch.setSidePanelVisibility(true);
-      dispatch.setActiveSidePanelTab(1);
+      dispatch.setActiveSidePanelTab(0);
     }
     // if (typeof this.props.onChange === "function") this.props.onChange();
   }
@@ -43,16 +48,16 @@ export default class SearchComponent extends React.Component {
         { vehicles } = this.props.state.map;
 
       const vehicleResults = await Promise.all(vehicles.filter(i =>
-        i.vehicleId.toLowerCase().includes(value.toLowerCase()) ||
+        i.vin.toLowerCase().includes(value.toLowerCase()) ||
               i.plate.toLowerCase().includes(value.toLowerCase()))
         .map(async i =>
           ({
             type: "map",
             category: "vehicle",
             icon: "truck",
-            vehicleId: i.vehicleId,
+            vin: i.vin,
             latlon: [i.lat, i.long],
-            title: `${i.plate} (${i.vehicleId})`,
+            title: `${i.plate} (${i.vin})`,
             description: await this.geoService.reverse(i.lat, i.long).then(k => k.district),
             // onClick: () => { document.getElementById('app-search').focus(); },
           })));

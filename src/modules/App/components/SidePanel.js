@@ -1,15 +1,10 @@
 import React from "react";
 import propTypes from "prop-types";
 import { Tab, Icon, Menu } from "semantic-ui-react";
-
-import "./../../../shared/style/fonts/fms-icons.css";
-
-// import { decorator } from 'redux-burger-menu';
+import FMSIcon from "./../../../shared/components/FMSIcon";
+import ComingSoon from "./../../../shared/components/ComingSoon";
 import "./SidePanel.scss";
-// import "./../../../../style/fonts.css";
 import VehicleSidePanelDisplay from "./../../Vehicle/VehicleSidePanelDisplay";
-
-// const Menu = decorator(Slide);
 
 export default class SidePanel extends React.Component {
   static showSettings(event) {
@@ -24,24 +19,24 @@ export default class SidePanel extends React.Component {
     return [
       [
         <Menu.Item key="Tab 1"><i className="ui icon ui-icon-truck-front" /> Araç</Menu.Item>,
-        <Tab.Pane as="div"><VehicleSidePanelDisplay
-          vehicle={state.map.vehicles.filter(v => v.vehicleId === state.map.selectedVehicle)[0]}
-        />
-        </Tab.Pane>,
+        <Tab.Pane
+          as={VehicleSidePanelDisplay}
+          vehicle={state.map.vehicles.filter(v => v.vin === state.map.selectedVehicle)[0]}
+        />,
       ],
       [
         <Menu.Item key="Tab 2"><Icon name="object group" />Gruplar</Menu.Item>,
         <Tab.Pane>
-        asdasd
+          <ComingSoon />
         </Tab.Pane>,
       ],
       [
-        <Menu.Item key="Tab 3"><i className="ui icon ui-icon-truck-front" /> Filo</Menu.Item>,
-        <Tab.Pane>Tab 3 Content</Tab.Pane>,
+        <Menu.Item key="Tab 3"><FMSIcon name="fleet" />Filo</Menu.Item>,
+        <Tab.Pane><ComingSoon /></Tab.Pane>,
       ],
       [
         <Menu.Item key="Tab 4"><Icon name="compass" />Gösterge</Menu.Item>,
-        <Tab.Pane>Tab 4 Content<Icon name="chevron right" /></Tab.Pane>,
+        <Tab.Pane><ComingSoon /><Icon name="chevron right" /></Tab.Pane>,
       ],
     ];
   }
@@ -56,6 +51,7 @@ export default class SidePanel extends React.Component {
           <Icon name={`chevron ${state.app.sidePanel.visible ? "right" : "left"}`} />
         </div>
         <Tab
+          as={React.Fragment}
           menu={{ icon: "labeled", style: { margin: "0" } }}
           panes={this.panes().map(i => ({ menuItem: i[0], render: () => i[1] }))}
           activeIndex={state.app.sidePanel.activeTabIndex}

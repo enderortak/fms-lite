@@ -1,4 +1,5 @@
 import React from "react";
+import ReactRouterPropTypes from "react-router-prop-types";
 import { Button, Form, Grid, Header, Icon, Message, Segment } from "semantic-ui-react";
 import AuthService from "./../../service/AuthService";
 import "./Login.scss";
@@ -6,6 +7,9 @@ import bg from "./bg.jpg";
 
 
 export default class Login extends React.Component {
+  static propTypes = {
+    history: ReactRouterPropTypes.history.isRequired,
+  }
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -14,7 +18,7 @@ export default class Login extends React.Component {
     this.state = { username: "", password: "", error: null };
   }
   componentWillMount() {
-    if (this.Auth.loggedIn()) { this.props.history.replace('/'); }
+    if (this.Auth.loggedIn()) { this.props.history.replace("/"); }
   }
   handleChange(e) {
     this.setState({
@@ -26,25 +30,16 @@ export default class Login extends React.Component {
 
     this.Auth.login(this.state.username, this.state.password)
       .then((result) => {
-        if (this.Auth.loggedIn()) this.props.history.replace('/');
+        if (this.Auth.loggedIn()) this.props.history.replace("/");
         else throw result;
       })
       .catch(error => this.setState({ error: error.code }));
   }
   render() {
     return (
-      <div
-        id="login-form"
-        style={{
- height: "100%", padding: "10rem", background: `url('${bg}') no-repeat center center fixed`, backgroundSize: "cover",
-}}
-      >
-        <Grid
-          textAlign="center"
-          style={{ height: "100%" }}
-          verticalAlign="middle"
-        >
-          <Grid.Column style={{ maxWidth: 450 }}>
+      <div id="login-form" style={{ backgroundImage: `url("${bg}")` }} >
+        <Grid textAlign="center" verticalAlign="middle" >
+          <Grid.Column>
             <Header as="h2" color="blue" textAlign="center">
               <Icon name="sign in" />
               {" "}Hesabınıza giriş yapın
@@ -75,7 +70,7 @@ export default class Login extends React.Component {
             </Form>
             {
                 this.state.error === 403 &&
-                <Message error content="Girdiğiniz hesap bilgileri hatalı" icon="warning sign" style={{ opacity: "0.9" }} />
+                <Message error content="Girdiğiniz hesap bilgileri hatalı" icon="warning sign" />
             }
           </Grid.Column>
         </Grid>

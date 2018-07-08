@@ -1,0 +1,24 @@
+@import "../../../shared/style/base";
+#vehicle-status{
+    margin-top: 0;
+    height: 100%;
+    i.icon {
+        color: $font-color-blue;
+        width: 48px;
+        height: 48px;
+        font-size: 48px;
+        line-height: 1;
+        &.i64{
+            width: 64px;
+            height: 64px;
+            font-size: 64px;
+        }
+    }
+    #overview-plate-display{
+        font-family: "Ford Antenna";
+        color: $font-color-blue;
+    }
+    .vehicle-data-display .row{
+        padding: 0.2rem;
+    }
+}

@@ -20,7 +20,7 @@ const mapInitState = {
 const mapReducer = (actualState = mapInitState, action) => {
   switch (action.type) {
     case SET_SELECTED_VEHICLE:
-      return ({ ...actualState, selectedVehicle: action.vehicleId });
+      return ({ ...actualState, selectedVehicle: action.vin });
     case SET_MAP_ZOOM:
       return ({
         ...actualState,

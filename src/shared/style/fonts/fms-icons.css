@@ -41,3 +41,47 @@
 .ui-icon-truck-front:before {
   content: "\61";
 }
+.ui-icon-location:before {
+  content: "\62";
+}
+.ui-icon-speed:before {
+  content: "\63";
+}
+.ui-icon-odometer-24:before {
+  content: "\64";
+}
+.ui-icon-odometer-t:before {
+  content: "\65";
+}
+.ui-icon-key-on:before {
+  content: "\66";
+}
+.ui-icon-key-off:before {
+  content: "\67";
+}
+.ui-icon-gps:before {
+  content: "\68";
+}
+.ui-icon-no-gps:before {
+  content: "\69";
+}
+.ui-icon-flag:before {
+  content: "\6a";
+}
+.ui-icon-flag-checkered:before {
+  content: "\6b";
+}
+.ui-icon-flag-o:before {
+  content: "\6c";
+}
+.ui-icon-flag-o-dont:before {
+  content: "\6d";
+}
+.ui-icon-odometer-large:before {
+  content: "\6e";
+}
+.ui-icon-fleet:before {
+  content: "\6f";
+}
+
+

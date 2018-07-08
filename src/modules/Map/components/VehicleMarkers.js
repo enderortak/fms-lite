@@ -14,12 +14,12 @@ const VehicleMarkers = ({ state, dispatch }) => (
     {
     state.map.vehicles.map(v => (
       <VehicleMarker
-        selected={state.map.selectedVehicle === v.vehicleId}
+        selected={state.map.selectedVehicle === v.vin}
         position={[v.lat, v.long]}
-        key={v.vehicleId}
+        key={v.vin}
         title={v.plate}
         onclick={() => {
-          dispatch.setSelectedVehicle(v.vehicleId);
+          dispatch.setSelectedVehicle(v.vin);
           dispatch.setSidePanelVisibility(true);
           dispatch.setActiveSidePanelTab(0);
           const map = new MapService();
@@ -30,14 +30,8 @@ const VehicleMarkers = ({ state, dispatch }) => (
 }
   </MarkerClusterGroup>
 );
-export const VehicleStates = {
-  ENGINE_OFF: 0,
-  IDLING: 1,
-  IDLING_VIOLATION: 2,
-  MOVING: 3,
-  NO_GPS: 4,
-  NO_CONNECTION_SHORT: 5,
-  NO_CONNECTION_LONG: 6,
-  UNKNOWN: 99,
+VehicleMarkers.propTypes = {
+  state: propTypes.object.isRequired,
+  dispatch: propTypes.object.isRequired,
 };
 export default VehicleMarkers;

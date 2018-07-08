@@ -1,0 +1,16 @@
+@import "../../../shared/style/base";
+#tutorial-notification-message{
+    margin: 0.5rem 1rem;
+    .icon.info.circle{
+        font-size: 2em;
+    }
+    .sub.header{
+        margin-top: 0.5em;
+    }    
+}
+.ui.checkbox.dont-show{
+    float: right;
+    label{
+        color:$font-color-light;
+    }
+}

@@ -19,6 +19,8 @@ export default class ApiService {
       "Content-Type": "application/json",
       // Authorization: this.auth.loggedIn() ? `Bearer ${this.auth.getToken()}` : undefined,
       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Methods": "*",
     };
     const requestOptions = {
       headers: requestHeaders,
