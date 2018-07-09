@@ -1,6 +1,6 @@
-import React from "react";
 import propTypes from "prop-types";
-import { Grid, Segment, Header, Icon } from "semantic-ui-react";
+import React from "react";
+import { Grid, Header, Icon, Segment } from "semantic-ui-react";
 import FMSIcon from "./../../../shared/components/FMSIcon";
 import "./VehicleStatus.scss";
 
@@ -52,7 +52,6 @@ const Overview = ({ plate, street, district }) => (
   </Grid.Row>
 );
 Overview.propTypes = {
-  vin: propTypes.string.isRequired,
   plate: propTypes.string.isRequired,
   street: propTypes.string.isRequired,
   district: propTypes.string.isRequired,
@@ -81,6 +80,7 @@ const Info = ({ plate, vin }) => (
   </Grid.Row>
 );
 Info.propTypes = {
+  vin: propTypes.string.isRequired,
   plate: propTypes.string.isRequired,
 };
 const Location = ({ lat, long /* altitude */ }) => (
