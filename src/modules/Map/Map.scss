@@ -28,6 +28,10 @@
             padding: 0.5em 0.8em;
         }
     }
+    .leaflet-div-icon {
+        background: none;
+        border: none;
+    }
 }
 
 .leaflet-control-container > .leaflet-top{
@@ -45,3 +49,6 @@
     animation-duration: 30s !important;
 }
 
+.sr-only {
+    display: none;
+  }

@@ -15,7 +15,7 @@ const proxy = {
       sex: 6,
     },
   ],
-  'POST /api/login/account': (req, res) => {
+  'POST /api/signin/account': (req, res) => {
     const { password, username } = req.body;
     if (password === '888888' && username === 'admin') {
       return res.json({

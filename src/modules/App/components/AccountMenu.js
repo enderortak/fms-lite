@@ -1,14 +1,18 @@
 import React from "react";
+import propTypes from "prop-types";
 import ReactRouterPropTypes from "react-router-prop-types";
 import { Header, Icon, Menu, Dropdown } from "semantic-ui-react";
-import userPropType from "./../../../types/user";
 import AuthService from "../../../service/AuthService";
 import "./AccountMenu.scss";
+import LocalizationService from "../../../service/LocalizationService";
+import withModal from "./../../../shared/components/ModalHoc";
+import AppSettings from "./../../AppSettings/AppSettings";
 
+const loc = new LocalizationService("accountMenu");
 export default class AccountMenu extends React.Component {
   static propTypes = {
     history: ReactRouterPropTypes.history.isRequired,
-    user: userPropType.isRequired,
+    onFleetConfigClick: propTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
@@ -17,28 +21,31 @@ export default class AccountMenu extends React.Component {
   }
   handleLogout() {
     this.Auth.logout();
-    this.props.history.replace('/login');
+    this.props.history.replace('/signin');
   }
   renderLoggedInUserDisplay() {
     return (
-      <Header as="h5" inverted id="account-name-display">
-        <Icon name="user" />
-        <Header.Content>
-          {this.props.user.name}
-        </Header.Content>
-      </Header>
+      <div className="text">
+        <Header as="h5" inverted id="account-name-display">
+          <Icon name="user" />
+          <Header.Content>
+            {this.Auth.getProfile().name}
+          </Header.Content>
+        </Header>
+      </div>
     );
   }
   render() {
-    const { dispatch } = this.props;
+    const { onFleetConfigClick } = this.props;
+    const DropdownItemWithModal = withModal(Dropdown.Item);
     return (
       <Menu.Menu position="right" id="account-menu">
-        <Dropdown item text={this.renderLoggedInUserDisplay()} icon="dropdown" >
+        <Dropdown item trigger={this.renderLoggedInUserDisplay()} icon="dropdown" >
           <Dropdown.Menu>
-            <Dropdown.Item icon="settings" onClick={dispatch.showFleetConfigModal} text="Filo Yönetimi" />
-            <Dropdown.Item icon="settings" text="Uygulama Ayarları" />
+            <Dropdown.Item icon="settings" onClick={onFleetConfigClick} text={loc.string("fleetManagement")} />
+            <DropdownItemWithModal icon="settings" text={loc.string("appSettings")} modal={AppSettings} />
             <Dropdown.Divider />
-            <Dropdown.Item icon="sign out" onClick={this.handleLogout} text="Çıkış" />
+            <Dropdown.Item icon="sign out" onClick={this.handleLogout} text={loc.string("signOut")} />
           </Dropdown.Menu>
         </Dropdown>
       </Menu.Menu>

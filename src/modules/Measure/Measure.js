@@ -35,7 +35,6 @@ export default class Measure extends React.Component {
     window.L = L;
   }
   componentDidMount() {
-    console.log("this is map", this.map);
     L.DomEvent.on(document, 'keydown', this.onMapKeyDown, this.map);
     // setTimeout(() => { console.log(MapService._map);  }, 5000);
   }

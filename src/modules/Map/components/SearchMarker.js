@@ -5,7 +5,7 @@ import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import { Icon, Label } from "semantic-ui-react";
 
-import ReactIcon from "./ReactIcon";
+import MarkerIcon from "./MarkerIcon";
 import "./SearchMarker.scss";
 
 export default class SearchMarker extends React.Component {
@@ -13,12 +13,13 @@ export default class SearchMarker extends React.Component {
     searchMarker: propTypes.shape({
       label: propTypes.string.isRequired,
       latlon: propTypes.arrayOf(propTypes.number).isRequired,
-    }).isRequired,
+    }),
   }
+  static defaultProps = { searchMarker: null }
   icon() {
     const { label } = this.props.searchMarker;
     const iconComponent = (
-      <ReactIcon>
+      <MarkerIcon>
         <div id="search-marker">
           <div className="marker-label">
             {label && <Label size="large" basic color="blue" >{label}</Label>}
@@ -35,7 +36,7 @@ textShadow: "2px 2px #FFFFFF, -2px -2px #FFFFFF, -2px 2px #FFFFFF, 2px -2px #FFF
           </div>
         </div>
 
-      </ReactIcon>
+      </MarkerIcon>
     );
     return divIcon({
       className: "custom icon",
@@ -43,7 +44,10 @@ textShadow: "2px 2px #FFFFFF, -2px -2px #FFFFFF, -2px 2px #FFFFFF, 2px -2px #FFF
     });
   }
   render() {
-    const { latlon, ...rest } = this.props.searchMarker;
-    return <Marker className="search" icon={this.icon()} position={latlon} {... rest} />;
+    if (this.props.searchMarker) {
+      const { latlon, ...rest } = this.props.searchMarker;
+      return <Marker className="search" icon={this.icon()} position={latlon} {... rest} />;
+    }
+    return null;
   }
 }

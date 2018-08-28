@@ -1,7 +1,7 @@
 import React from "react";
 import propTypes from "prop-types";
 
-export default class ReactIcon extends React.Component {
+export default class MarkerIcon extends React.Component {
   static propTypes = {
     children: propTypes.node,
   }

@@ -4,6 +4,9 @@ $side-panel-toggler-height: 6rem;
 $side-panel-toggler-width: 3rem;
 
 #side-panel{
+  display: flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
   position:  fixed;
   width: $side-panel-width;
   height: calc(100% - #{$top-panel-height});
@@ -44,5 +47,11 @@ $side-panel-toggler-width: 3rem;
       margin-left: .5rem;
       color: #FFFFFF;
     }
+  }
+  &>.icon.menu{
+    min-height: 74px;
+  }
+  &>.secondary.menu{
+    min-height: 40px;
   }
 }

@@ -1,6 +1,12 @@
 @import "../../../shared/style/base";
 #account-menu{
-    .ui.dropdown .menu{
-        opacity: 1;
+    height: 100%;
+    .ui.dropdown {
+        min-width: 15rem;
+        justify-content: space-around;
+        .menu{
+            opacity: 1;
+        }
     }
+    
 }

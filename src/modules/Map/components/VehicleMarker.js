@@ -4,7 +4,7 @@ import propTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 import { Marker } from "react-leaflet";
 import { Label } from "semantic-ui-react";
-import ReactIcon from "./ReactIcon";
+import MarkerIcon from "./MarkerIcon";
 import "./VehicleMarker.scss";
 
 
@@ -16,12 +16,12 @@ export default class VehicleMarker extends React.Component {
   icon() {
     const { selected, title } = this.props;
     const iconComponent = (
-      <ReactIcon>
+      <MarkerIcon>
         {selected && title && <Label size="large" basic color="blue" className="vehicle-marker-title">{title}</Label>}
         <div
           className={`${selected ? "selected pulse" : "notSelected"} vehicle-marker`}
         />
-      </ReactIcon>
+      </MarkerIcon>
     );
     return divIcon({
       className: "custom icon",

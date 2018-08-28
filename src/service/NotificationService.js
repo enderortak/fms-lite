@@ -1,7 +1,6 @@
 import React from "react";
 import { toast, style } from "react-toastify";
-import { Header, Icon, Checkbox } from "semantic-ui-react";
-// import { css } from "glamor";
+import { Header, Icon } from "semantic-ui-react";
 
 export default class NotificationService {
     simple = (text, options) => this._show(text, options);

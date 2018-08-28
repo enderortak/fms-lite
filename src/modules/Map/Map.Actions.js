@@ -2,6 +2,7 @@
 import ApiService from "./../../service/ApiService";
 import NotificationService from "./../../service/NotificationService";
 import AuthService from "../../service/AuthService";
+import { setSidePanelVisibility, setActiveSidePanelTab } from "./../App/App.Actions";
 
 
 const notify = new NotificationService(); // eslint-disable-line
@@ -21,13 +22,14 @@ export const FETCH_VEHICLES_SUCCESS = "FETCH_VEHICLES_SUCCESS";
 export const FETCH_VEHICLES_FAILURE = "FETCH_VEHICLES_FAILURE";
 
 
-export const fetchVehicles = () => (dispatch) => {
+export const fetchVehicles = callback => (dispatch) => {
   dispatch(fetchVehiclesBegin());
-  const api = new ApiService();
+  const vehicleApi = ApiService.vehicle;
   const auth = new AuthService();
-  api.fetch(`vehicles/${auth.getProfile().username}`, "GET")
+  vehicleApi.getByUser(auth.getUser().username)
     .then((result) => {
       dispatch(fetchVehiclesSuccess(result));
+      if (callback && typeof callback === "function") callback();
       // notify.simple(<TutorialNotification />, { type: "info", autoClose: false, closeOnClick: false });
       return result;
     })
@@ -42,6 +44,10 @@ export const setSelectedVehicle = (vin, latlon) => (dispatch) => {
     dispatch(setMapCenter(latlon));
     dispatch(setMapZoom(17));
   }
+  if (vin) {
+    dispatch(setSidePanelVisibility(true));
+    dispatch(setActiveSidePanelTab(0));
+  }
   dispatch(({ type: SET_SELECTED_VEHICLE, vin }));
 };
 
@@ -55,3 +61,4 @@ export const setMapCenter = latlon => ({ type: SET_MAP_CENTER, latlon });
 export const setMapBounds = (corner1, corner2) => ({ type: SET_MAP_BOUNDS, corner1, corner2 });
 export const setSearchMarker = (label, latlon) => ({ type: SET_SEARCH_MARKER, label, latlon });
 export const dismissSearchMarker = () => ({ type: DISMISS_SEARCH_MARKER });
+

@@ -1,5 +1,8 @@
 #fleet-config{
     margin: 0 !important;
+    .ui.menu{
+        width: auto;
+    }
 }
 .ui.modals.dimmer.visible{
     display: flex !important

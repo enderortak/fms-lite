@@ -1,4 +1,4 @@
-const drivers = [
+const testDrivers = [
   "İsmail Safa Özler",
   "Mehmet Kusun",
   "Zamir Damar Arıkoğlu",
@@ -325,7 +325,7 @@ const drivers = [
   "Tunalı Hilmi",
   "Yusuf Ziya Özenci",
 ];
-const proxy = {
-  'GET /api/drivers': drivers,
+const drivers = {
+  'GET /api/drivers': testDrivers,
 };
-module.exports = proxy;
+module.exports = { drivers, testDrivers };

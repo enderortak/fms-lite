@@ -1,28 +1,28 @@
 import React from "react";
-import { Segment } from "semantic-ui-react";
+import propTypes from "prop-types";
 import { RadialGauge } from "react-canvas-gauges";
-import "./../../../shared/style/fonts/grandnationalsuperital.css";
 
-const lightTheme = {
-  highlights: [{ from: 110, to: 130, color: "rgba(0, 52, 120, .75)" }],
-  colorPlate: "#FFF",
-  colorMajorTicks: "#bbe0ec",
-  colorMinorTicks: "#9fbcc5",
-  colorTitle: "#fff",
-  colorUnits: "rgba(0, 52, 120, .75)",
-  colorNumbers: "rgba(0, 52, 120, .75)",
-  colorNeedleStart: "rgba(240, 128, 128, 1)",
-  colorNeedleEnd: "rgba(255, 160, 122, .9)",
-  colorNeedleShadowDown: "#333",
-};
+
+// const lightTheme = {
+//   highlights: [{ from: 110, to: 130, color: "rgba(0, 52, 120, .75)" }],
+//   colorPlate: "#FFF",
+//   colorMajorTicks: "#bbe0ec",
+//   colorMinorTicks: "#9fbcc5",
+//   colorTitle: "#fff",
+//   colorUnits: "rgba(0, 52, 120, .75)",
+//   colorNumbers: "rgba(0, 52, 120, .75)",
+//   colorNeedleStart: "rgba(240, 128, 128, 1)",
+//   colorNeedleEnd: "rgba(255, 160, 122, .9)",
+//   colorNeedleShadowDown: "#333",
+// };
 
 const darkTheme = {
-  highlights: [{ from: 110, to: 130, color: "rgba(200, 50, 50, .75)" }],
-  colorPlate: "#222",
-  colorMajorTicks: "#f5f5f5",
-  colorMinorTicks: "#ddd",
-  colorTitle: "#fff",
-  colorUnits: "#ccc",
+  highlights: [{ from: 110, to: 130, color: "rgba(200, 50, 50, 0.9)" }],
+  colorPlate: "#767676",
+  colorMajorTicks: "lightblue",
+  colorMinorTicks: "rgba(255,255,255,0.7)",
+  colorTitle: "rgba(255,255,255,0.9)",
+  colorUnits: "rgba(255,255,255,0.9)",
   colorNumbers: "lightblue",
   colorNeedleStart: "rgba(240, 128, 128, 1)",
   colorNeedleEnd: "rgba(255, 160, 122, .9)",
@@ -30,19 +30,17 @@ const darkTheme = {
 };
 
 const Cluster = ({ speed }) => (
-  <Segment style={{
-    //  background: "#222",
-     background: "#FFF",
-     height: "17rem",
+  <div style={{
+    position: "absolute",
+    left: "calc(50% - 90px)",
+    top: "-92px",
+    height: "130px",
     overflow: "hidden",
-    textAlign: "center",
     }}
   >
     <RadialGauge
-      height={300}
-      width={300}
-      units="Km/h"
-      title={false}
+      height={200}
+      width={200}
       animateOnInit
       value={speed}
       minValue={0}
@@ -52,10 +50,7 @@ const Cluster = ({ speed }) => (
       minorTicks={2}
       strokeTicks
       valueBox={false}
-        //   fontValue="Repetition"
       fontNumbers="Grand National Super-Italic"
-      fontUnits="Grand National Super-Italic"
-            // fontNumbersSize="16"
       animatedValue
       borders={false}
       borderShadowWidth={0}
@@ -66,10 +61,25 @@ const Cluster = ({ speed }) => (
       needleCircleInner={false}
       animationDuration={500}
       animationRule="linear"
-      ticksAngle={200}
-      startAngle={80}
-      valueBoxWidth={45}
-      {...lightTheme}
+      ticksAngle={210}
+      startAngle={75}
+      {...darkTheme}
     />
-  </Segment>
+    <div style={{
+      fontFamily: "Grand National Super-Italic",
+      fontSize: "1.1em",
+      position: "absolute",
+      bottom: "-3px",
+      width: "100%",
+      textAlign: "center",
+      color: "lightblue",
+    }}
+    >
+      {Math.round(speed)} kph
+    </div>
+  </div>
 );
+Cluster.propTypes = {
+  speed: propTypes.number.isRequired,
+};
+export default Cluster;

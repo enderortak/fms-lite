@@ -1,0 +1,23 @@
+.data-grid{
+    .data-grid-header{
+        cursor: pointer;
+    }
+    .data-grid-operations-cell{
+        overflow: visible;
+        text-align: right;
+    }
+    .data-grid-page-length{
+        float: left;
+    }
+    .data-grid-page-length-label {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin: 0;
+    }
+    .data-grid-page-length-button{
+        border: 1px solid rgba(34, 36, 38, 0.05);
+    }
+    .data-grid-pagination {
+        float: right;
+    }
+}

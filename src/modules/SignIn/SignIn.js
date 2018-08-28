@@ -2,11 +2,13 @@ import React from "react";
 import ReactRouterPropTypes from "react-router-prop-types";
 import { Button, Form, Grid, Header, Icon, Message, Segment } from "semantic-ui-react";
 import AuthService from "./../../service/AuthService";
-import "./Login.scss";
+import "./SignIn.scss";
 import bg from "./bg.jpg";
+import LocalizationService from "../../service/LocalizationService";
 
+const localizer = new LocalizationService("signIn");
 
-export default class Login extends React.Component {
+export default class SignIn extends React.Component {
   static propTypes = {
     history: ReactRouterPropTypes.history.isRequired,
   }
@@ -18,7 +20,7 @@ export default class Login extends React.Component {
     this.state = { username: "", password: "", error: null };
   }
   componentWillMount() {
-    if (this.Auth.loggedIn()) { this.props.history.replace("/"); }
+    if (this.Auth.signedIn()) { this.props.history.replace("/"); }
   }
   handleChange(e) {
     this.setState({
@@ -28,21 +30,22 @@ export default class Login extends React.Component {
   handleFormSubmit(e) {
     e.preventDefault();
 
-    this.Auth.login(this.state.username, this.state.password)
+    this.Auth.signIn(this.state.username, this.state.password)
       .then((result) => {
-        if (this.Auth.loggedIn()) this.props.history.replace("/");
-        else throw result;
+        console.log(result);
+        if (this.Auth.signedIn()) this.props.history.replace("/");
+        else this.setState({ error: result.code });
       })
-      .catch(error => this.setState({ error: error.code }));
+      .catch((error) => { console.log(error); this.setState({ error: error.code }); });
   }
   render() {
     return (
-      <div id="login-form" style={{ backgroundImage: `url("${bg}")` }} >
+      <div id="signin-form" style={{ backgroundImage: `url("${bg}")` }} >
         <Grid textAlign="center" verticalAlign="middle" >
           <Grid.Column>
             <Header as="h2" color="blue" textAlign="center">
               <Icon name="sign in" />
-              {" "}Hesabınıza giriş yapın
+              {` ${localizer.string("title")}`}
             </Header>
             <Form size="large">
               <Segment>
@@ -52,7 +55,7 @@ export default class Login extends React.Component {
                   fluid
                   icon="user"
                   iconPosition="left"
-                  placeholder="Kullanıcı Adı"
+                  placeholder={localizer.string("username")}
                   onChange={this.handleChange}
                 />
                 <Form.Input
@@ -61,16 +64,16 @@ export default class Login extends React.Component {
                   fluid
                   icon="lock"
                   iconPosition="left"
-                  placeholder="Şifre"
+                  placeholder={localizer.string("password")}
                   onChange={this.handleChange}
                 />
 
-                <Button color="blue" fluid size="large" onClick={this.handleFormSubmit}>Giriş</Button>
+                <Button color="blue" fluid size="large" onClick={this.handleFormSubmit}>{localizer.string("signIn")}</Button>
               </Segment>
             </Form>
             {
                 this.state.error === 403 &&
-                <Message error content="Girdiğiniz hesap bilgileri hatalı" icon="warning sign" />
+                <Message error content={localizer.string("credentialsInvalid")} icon="warning sign" />
             }
           </Grid.Column>
         </Grid>

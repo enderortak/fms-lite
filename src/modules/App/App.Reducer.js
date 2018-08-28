@@ -1,11 +1,14 @@
-import { SET_SIDE_PANEL_VISIBILITY, SET_ACTIVE_SIDE_PANEL_TAB } from "./App.Actions";
+import { SET_SIDE_PANEL_VISIBILITY, SET_ACTIVE_SIDE_PANEL_TAB, SET_LANGUAGE } from "./App.Actions";
+import AuthService from "./../../service/AuthService";
 
+const auth = new AuthService();
 
 const appInitState = {
   sidePanel: {
     visible: false,
-    activeTabIndex: 1,
+    activeTabIndex: 0,
   },
+  language: auth.getUser().appSettings.language,
 };
 
 const appReducer = (actualState = appInitState, action) => {
@@ -25,6 +28,11 @@ const appReducer = (actualState = appInitState, action) => {
           ...actualState.sidePanel,
           activeTabIndex: action.activeTabIndex,
         },
+      });
+    case SET_LANGUAGE:
+      return ({
+        ...actualState,
+        language: action.language,
       });
     default: return actualState;
   }

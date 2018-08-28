@@ -1,7 +1,7 @@
 @import "../../../shared/style/base";
 #vehicle-status{
     margin-top: 0;
-    height: 100%;
+    flex: 1;
     i.icon {
         color: $font-color-blue;
         width: 48px;
@@ -18,7 +18,34 @@
         font-family: "Ford Antenna";
         color: $font-color-blue;
     }
+    #vehicle-status-showcase{
+        padding: 0;
+        color: rgb(0,52,120);
+        .ui-icon-speed{
+            padding-top: 14px;
+        }
+        & > .column{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            .ui-icon-odometer-large{
+                font-size: 54px;
+            }
+            & > div{
+                font-family: "Ford Antenna";
+                font-size: 1.5em;
+                & > span {
+                    font-size: 0.6em;
+                }
+            }
+        }
+    }
     .vehicle-data-display .row{
         padding: 0.2rem;
+    }
+    #vehicle-status-last-comm{
+        padding: 0;
     }
 }

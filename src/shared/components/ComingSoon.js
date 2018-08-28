@@ -1,4 +1,5 @@
 import React from "react";
+import propTypes from "prop-types";
 import svg from "./ComingSoon.svg";
 import "./ComingSoon.scss";
 
@@ -11,5 +12,9 @@ const ComingSoon = ({ limitedSize }) => (
     />
   </div>
 );
+ComingSoon.propTypes = {
+  limitedSize: propTypes.string,
+};
+ComingSoon.defaultProps = { limitedSize: null };
 export default ComingSoon;
 

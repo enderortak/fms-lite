@@ -12,9 +12,8 @@ const mapInitState = {
   zoom: 15,
   loading: false,
   mapTile: "osm",
-  overlays: {
-    traffic: false,
-  },
+  overlays: { traffic: false },
+  searchMarker: null,
 };
 
 const mapReducer = (actualState = mapInitState, action) => {
@@ -73,7 +72,7 @@ const mapReducer = (actualState = mapInitState, action) => {
     case DISMISS_SEARCH_MARKER:
       return ({
         ...actualState,
-        searchMarker: undefined,
+        searchMarker: null,
       });
     case SET_MAP_TILE:
       return ({

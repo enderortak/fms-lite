@@ -1,33 +1,40 @@
 import decode from "jwt-decode";
 import React from "react";
+import ReactRouterPropTypes from "react-router-prop-types";
 import ApiService from "./ApiService";
+import LocalizationService from "./LocalizationService";
+import { setLanguage } from "./../modules/App/App.Actions";
+import store from "./StoreService";
+
 
 export default class AuthService {
   // Initializing important variables
   constructor() {
-    this.login = this.login.bind(this);
-    this.getProfile = this.getProfile.bind(this);
+    this.signIn = this.signIn.bind(this);
+    this.getProfile = this.getUser.bind(this);
   }
 
-  login(username, password) {
-    // Get a token from api server using the fetch api
-    const api = new ApiService();
-    return api.fetch("login", "POST", {
-      username,
-      password,
-    }).then((result) => {
-      if (result.token) this.setToken(result.token); // Setting the token in localStorage
-      return result;
-    });
+  signIn(username, password) {
+    // Get a token from api server
+
+    return ApiService.auth.signIn(username, password)
+      .then((result) => {
+        if (result.token) {
+          this.setToken(result.token); // Setting the token in localStorage
+          debugger;
+          store.dispatch(setLanguage(this.getUser().appSettings.language)); // Setting the language
+        }
+        return result;
+      });
   }
 
-  loggedIn() {
+  signedIn() {
     // Checks if there is a saved token and it's still valid
     const token = this.getToken(); // GEtting token from localstorage
     return !!token && !this.isTokenExpired(token); // handwaiving here
   }
 
-  isTokenExpired(token) {
+  isTokenExpired(/* token */) {
     // try {
     //   const decoded = decode(token);
     //   if (decoded.exp < Date.now() / 1000) { // Checking if token is expired. N
@@ -55,7 +62,7 @@ export default class AuthService {
     localStorage.removeItem("id_token");
   }
 
-  getProfile() {
+  getUser() {
     // Using jwt-decode npm package to decode the token
     return decode(this.getToken());
     // return { username: "ender" };
@@ -75,28 +82,27 @@ export default class AuthService {
 export const requireAuth = (AuthComponent) => {
   const Auth = new AuthService();
   return class AuthWrappedComponent extends React.Component {
+    static propTypes = {
+      history: ReactRouterPropTypes.history.isRequired,
+    }
     constructor(props) {
       super(props);
-      this.state = {
-        user: null,
-      };
+      this.state = { user: null };
     }
     componentWillMount() {
-      if (!Auth.loggedIn()) {
-        this.props.history.replace('/login');
+      if (!Auth.signedIn()) {
+        this.props.history.replace('/signin');
         return false;
       }
       try {
-        const profile = Auth.getProfile();
-        this.setState({
-          user: profile,
-        });
+        const profile = Auth.getUser();
+        this.setState({ user: profile });
         return true;
         // alert(`I am logged in as ${profile.username}. I can be rendered now.`);
       } catch (err) {
         // alert("Invalid session. I will logout now.");
         Auth.logout();
-        this.props.history.replace('/login');
+        this.props.history.replace('/signin');
         return false;
       }
     }

@@ -1,5 +1,6 @@
 const { testUsers } = require("./auth");
 const apiSettings = require("./_apiMocker.Settings");
+const { testDrivers } = require("./drivers");
 
 const vehicles = [
   {
@@ -10,6 +11,7 @@ const vehicles = [
     long: 29.232574,
     speed: 58,
     lastPositionUpdate: "20180522161115",
+    driver: testDrivers[0],
   },
   {
     vin: "ford2_vin",
@@ -19,6 +21,7 @@ const vehicles = [
     long: 29.233703,
     speed: 0,
     lastPositionUpdate: "20180522160115",
+    driver: testDrivers[1],
   },
   {
     vin: "ford3_vin",
@@ -28,6 +31,7 @@ const vehicles = [
     long: 29.234203,
     speed: 0,
     lastPositionUpdate: "20180522155415",
+    driver: testDrivers[2],
   },
   {
     vin: "ford4_vin",
@@ -37,6 +41,7 @@ const vehicles = [
     long: 29.234703,
     speed: 0,
     lastPositionUpdate: "20180522154315",
+    driver: testDrivers[3],
   },
   {
     vin: "ford5_vin",
@@ -46,15 +51,28 @@ const vehicles = [
     long: 29.134703,
     speed: 68,
     lastPositionUpdate: "20180522155848",
+    driver: testDrivers[4],
   },
 ];
 
 const proxy = {
-  'GET /api/vehicles/:username': (req, res) => {
+  'GET /api/vehicle/:username': (req, res) => {
     setTimeout(() => res.json(vehicles.filter(v =>
       testUsers.filter(i => i.username === req.params.username)[0].vehicles.includes(v.moduleId))), apiSettings.apiDelay);
   },
-  "PUT /api/vehicles": (req, res) => {
+  "POST /api/vehicle": (req, res) => {
+    setTimeout(() => {
+      if (vehicles.filter(i => i.vin === req.body.vin).length === 0) {
+        vehicles.push(req.body);
+        return res.json({ status: 'ok', code: "200" });
+      }
+      return res.json({
+        status: 'error',
+        code: 403,
+      });
+    }, apiSettings.apiDelay);
+  },
+  "PUT /api/vehicle": (req, res) => {
     setTimeout(() => {
       if (vehicles.filter(i => i.vin === req.body.vin).length > 0) {
         vehicles.filter(i => i.vin === req.body.vin)[0] =

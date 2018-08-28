@@ -5,23 +5,25 @@ import ReactMomentPropTypes from "react-moment-proptypes";
 import "moment/locale/tr";
 import { Feed, Icon, Segment, Accordion, Table } from "semantic-ui-react";
 import "./VehicleNotifications.scss";
+import LocalizationService from "../../../service/LocalizationService";
 
+const localizer = new LocalizationService("vehicleNotifications");
+moment.locale(localizer.localeString());
 
-const VehicleNotifications = ({ notifications }) => {
-  moment.locale("tr");
-  return (
-    <Segment>
-      <Feed id="vehicle-notification-feed">
-        {
-          notifications.map((i, ind) => <VehicleNotification icon={i.icon} date={i.date} text={i.text} key={ind} />)
-        }
-      </Feed>
-    </Segment>
-  );
-};
+const VehicleNotifications = ({ notifications }) => (
+  <Segment>
+    <Feed id="vehicle-notification-feed">
+      {
+        notifications.map((i, ind) => <VehicleNotification icon={i.icon} date={i.date} text={i.text} key={ind} />)
+      }
+    </Feed>
+  </Segment>
+);
 
 VehicleNotifications.propTypes = {
-  notifications: propTypes.arrayOf(propTypes.shape({ date: ReactMomentPropTypes.momentObj, text: propTypes.string.isRequired })).isRequired,
+  notifications: propTypes.arrayOf(propTypes.shape({
+    date: ReactMomentPropTypes.momentObj, text: propTypes.string.isRequired,
+  })).isRequired,
 };
 
 const VehicleNotification = ({ icon, date, text }) => (
@@ -35,17 +37,23 @@ const VehicleNotification = ({ icon, date, text }) => (
       <Feed.Summary>
         <Accordion
           panels={[{
-            title: <Accordion.Title><Icon name="dropdown" />{text}<Feed.Date>{date.fromNow()}</Feed.Date></Accordion.Title>,
+            title: (
+              <Accordion.Title key={1} >
+                <Icon name="dropdown" />
+                {text}
+                <Feed.Date>{date.fromNow()}</Feed.Date>
+              </Accordion.Title>
+            ),
             content: (
-              <Accordion.Content>
+              <Accordion.Content key={1} >
                 <Table definition size="small">
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell>Tarih - Saat</Table.Cell>
+                      <Table.Cell>{localizer.string("date")} - {localizer.string("time")}</Table.Cell>
                       <Table.Cell>{date.format("DD.MM.YYYY dddd, HH:mm")}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell>Konum</Table.Cell>
+                      <Table.Cell>{localizer.string("location")}</Table.Cell>
                       <Table.Cell>40.404040, 29.292929</Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -60,5 +68,12 @@ const VehicleNotification = ({ icon, date, text }) => (
     </Feed.Content>
   </Feed.Event>
 );
-
+VehicleNotification.propTypes = {
+  date: ReactMomentPropTypes.momentObj.isRequired,
+  text: propTypes.string.isRequired,
+  icon: propTypes.element,
+};
+VehicleNotification.defaultProps = {
+  icon: null,
+};
 export default VehicleNotifications;
